@@ -9,6 +9,5 @@ public class Discount : Auditable
 
     public string Description { get; set; } = String.Empty;
 
-    public short Percentage { get; set; }
 
 }

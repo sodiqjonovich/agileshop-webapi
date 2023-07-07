@@ -37,7 +37,6 @@ create table discounts
 	id bigint generated always as identity primary key,
 	name varchar(50) not null,
 	description text,
-	percentage smallint not null,
 	created_at timestamp without time zone default now(),
 	updated_at timestamp without time zone default now()
 );
@@ -48,6 +47,7 @@ create table product_discounts
 	product_id bigint references products (id),
 	discount_id bigint references discounts (id),
 	description text,
+	percentage smallint,
 	start_at timestamp without time zone not null,
 	end_at timestamp without time zone not null,
 	created_at timestamp without time zone default now(),
