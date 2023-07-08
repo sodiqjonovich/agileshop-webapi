@@ -159,3 +159,4 @@ create table order_details
 	created_at timestamp without time zone default now(),
 	updated_at timestamp without time zone default now()
 );
+SET TIMEZONE TO 'UTC';
