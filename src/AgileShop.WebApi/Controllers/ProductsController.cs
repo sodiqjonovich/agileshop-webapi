@@ -1,6 +1,7 @@
 using AgileShop.DataAccess.Interfaces.Categories;
 using AgileShop.DataAccess.Repositories.Categories;
 using AgileShop.Domain.Entities.Categories;
+using AgileShop.Domain.Entities.Products;
 using AgileShop.Service.Common.Helpers;
 using AgileShop.Service.Dtos.Categories;
 using AgileShop.Service.Interfaces.Categories;
@@ -12,5 +13,4 @@ namespace AgileShop.WebApi.Controllers;
 [ApiController]
 public class ProductsController : ControllerBase
 {
-    
 }
