@@ -15,9 +15,9 @@ public class CategoryCreateValidator : AbstractValidator<CategoryCreateDto>
 		RuleFor(dto => dto.Description).NotNull().NotEmpty().WithMessage("Description field is required!")
 			.MinimumLength(20).WithMessage("Description field is required!");
 
-		int maxImageSizeMB = 5;
+		int maxImageSizeMB = 3;
 		RuleFor(dto => dto.Image).NotEmpty().NotNull().WithMessage("Image field is required");
-		RuleFor(dto => dto.Image.Length).LessThan(maxImageSizeMB * 1024 * 1024).WithMessage($"Image size must be less than {maxImageSizeMB} MB");
+		RuleFor(dto => dto.Image.Length).LessThan(maxImageSizeMB * 1024 * 1024 + 1).WithMessage($"Image size must be less than {maxImageSizeMB} MB");
 		RuleFor(dto => dto.Image.FileName).Must(predicate =>
 		{
 			FileInfo fileInfo = new FileInfo(predicate);

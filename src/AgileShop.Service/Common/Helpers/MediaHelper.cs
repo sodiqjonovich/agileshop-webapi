@@ -20,8 +20,8 @@ public class MediaHelper
             ".png",
             // Bmp files
             ".bmp",
-            // Heic files (iphone)
-            ".heic"
+            // Svg files
+            ".svg"
         };
     } 
 }
