@@ -1,5 +1,6 @@
 ﻿using AgileShop.Service.Dtos.Auth;
 using AgileShop.Service.Interfaces.Auth;
+using AgileShop.Service.Validators;
 using AgileShop.Service.Validators.Dtos.Auth;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,5 +27,15 @@ public class AuthController : ControllerBase
             return Ok(new { serviceResult.Result, serviceResult.CachedMinutes });
         }
         else return BadRequest(result.Errors);
+    }
+
+    [HttpPost("register/send-code")]
+    public async Task<IActionResult> SendCodeRegisterAsync(string phone)
+    {
+        var result = PhoneNumberValidator.IsValid(phone);
+        if (result == false) return BadRequest("Phone number is invalid!");
+
+        var serviceResult = await _authService.SendCodeForRegisterAsync(phone);
+        return Ok(new { serviceResult.Result, serviceResult.CachedVerificationMinutes });
     }
 }

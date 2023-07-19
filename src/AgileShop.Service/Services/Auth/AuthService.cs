@@ -1,6 +1,8 @@
 ﻿using AgileShop.DataAccess.Interfaces.Users;
 using AgileShop.Domain.Exceptions.Users;
+using AgileShop.Service.Common.Helpers;
 using AgileShop.Service.Dtos.Auth;
+using AgileShop.Service.Dtos.Security;
 using AgileShop.Service.Interfaces.Auth;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.AccessControl;
@@ -19,6 +21,8 @@ public class AuthService : IAuthService
         this._memoryCache = memoryCache;
         this._userRepository = userRepository;
     }
+
+    #pragma warning disable
     public async Task<(bool Result, int CachedMinutes)> RegisterAsync(RegisterDto dto)
     {
         var user = await _userRepository.GetByPhoneAsync(dto.PhoneNumber);
@@ -36,13 +40,28 @@ public class AuthService : IAuthService
         return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
     }
 
-    public Task<(bool Result, int CachedVerificationMinutes)> SendCodeForRegisterAsync(string phone)
+    public async Task<(bool Result, int CachedVerificationMinutes)> SendCodeForRegisterAsync(string phone)
     {
-        throw new NotImplementedException();
+        if (_memoryCache.TryGetValue(phone, out RegisterDto registerDto))
+        {
+            VerificationDto verificationDto = new VerificationDto();
+            verificationDto.Attempt = 0;
+            verificationDto.CreatedAt = TimeHelper.GetDateTime();
+            // make confirm code as random
+            verificationDto.Code = 11111;
+            _memoryCache.Set(phone, verificationDto, 
+                TimeSpan.FromMinutes(CACHED_MINUTES_FOR_VERIFICATION));
+
+            // sms sender::begin
+            // sms sender::end
+
+            return (Result: true, CachedVerificationMinutes: CACHED_MINUTES_FOR_VERIFICATION);
+        }
+        else throw new UserCacheDataExpiredException();
     }
 
-    public Task<(bool Result, string Token)> VerifyRegisterAsync(string phone, int code)
+    public async Task<(bool Result, string Token)> VerifyRegisterAsync(string phone, int code)
     {
-        throw new NotImplementedException();
+        throw new Exception();
     }
 }
