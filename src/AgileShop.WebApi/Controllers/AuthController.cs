@@ -38,4 +38,11 @@ public class AuthController : ControllerBase
         var serviceResult = await _authService.SendCodeForRegisterAsync(phone);
         return Ok(new { serviceResult.Result, serviceResult.CachedVerificationMinutes });
     }
+
+    [HttpPost("register/verify")]
+    public async Task<IActionResult> VerifyRegisterAsync([FromBody] VerifyRegisterDto verifyRegisterDto)
+    {
+        var serviceResult = await _authService.VerifyRegisterAsync(verifyRegisterDto.PhoneNumber, verifyRegisterDto.Code);
+        return Ok(new { serviceResult.Result, serviceResult.Token });
+    }
 }
