@@ -40,12 +40,12 @@ public class AuthService : IAuthService
         if (user is not null) throw new UserAlreadyExistsException(dto.PhoneNumber);
 
         // delete if exists user by this phone number
-        if(_memoryCache.TryGetValue("register_"+dto.PhoneNumber, out RegisterDto cachedRegisterDto))
+        if(_memoryCache.TryGetValue(REGISTER_CACHE_KEY+dto.PhoneNumber, out RegisterDto cachedRegisterDto))
         {
             cachedRegisterDto.FirstName = cachedRegisterDto.FirstName;
             _memoryCache.Remove(dto.PhoneNumber);
         }
-        else _memoryCache.Set("register_"+dto.PhoneNumber, dto, 
+        else _memoryCache.Set(REGISTER_CACHE_KEY + dto.PhoneNumber, dto, 
             TimeSpan.FromMinutes(CACHED_MINUTES_FOR_REGISTER));
 
         return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
@@ -53,21 +53,21 @@ public class AuthService : IAuthService
 
     public async Task<(bool Result, int CachedVerificationMinutes)> SendCodeForRegisterAsync(string phone)
     {
-        if (_memoryCache.TryGetValue("register_"+phone, out RegisterDto registerDto))
+        if (_memoryCache.TryGetValue(REGISTER_CACHE_KEY + phone, out RegisterDto registerDto))
         {
             VerificationDto verificationDto = new VerificationDto();
             verificationDto.Attempt = 0;
             verificationDto.CreatedAt = TimeHelper.GetDateTime();
 
             // make confirm code as random
-            verificationDto.Code = 11111;
+            verificationDto.Code = CodeGenerator.GenerateRandomNumber();
 
-            if(_memoryCache.TryGetValue("verify_register_"+phone, out VerificationDto oldVerifcationDto))
+            if(_memoryCache.TryGetValue(VERIFY_REGISTER_CACHE_KEY+phone, out VerificationDto oldVerifcationDto))
             {
-                _memoryCache.Remove("verify_register_" + phone);
+                _memoryCache.Remove(VERIFY_REGISTER_CACHE_KEY + phone);
             }
             
-            _memoryCache.Set("verify_register_" + phone, verificationDto, 
+            _memoryCache.Set(VERIFY_REGISTER_CACHE_KEY + phone, verificationDto, 
                 TimeSpan.FromMinutes(CACHED_MINUTES_FOR_VERIFICATION));
 
             SmsMessage smsMessage = new SmsMessage();

@@ -11,7 +11,6 @@ public class BaseRepository
 	public BaseRepository()
 	{
 		SqlMapper.AddTypeHandler(new DateOnlyTypeHandler());
-		SqlMapper.AddTypeHandler(new IdentityRoleTypeHandler());
 		Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
 		this._connection = new NpgsqlConnection("Host=localhost; Port=5432; Database=agile-shop-db; User Id=postgres; Password=785214;");
 	}

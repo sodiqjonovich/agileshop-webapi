@@ -10,12 +10,8 @@ public class DateOnlyTypeHandler : SqlMapper.TypeHandler<DateOnly>
     {
         if (value is not null)
         {
-            string[] date = value.ToString()!.Split('-');
-            int year = int.Parse(date[0]);
-            int month = int.Parse(date[1]);
-            int day = int.Parse(date[2]);
-            DateOnly dateOnly = new DateOnly(year, month, day);
-            return dateOnly;
+            var datetime = DateTime.Parse(value.ToString()!);
+            return DateOnly.FromDateTime(datetime);
         }
         else return new DateOnly();
     }

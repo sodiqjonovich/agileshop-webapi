@@ -1,4 +1,5 @@
-﻿using AgileShop.Service.Dtos.Auth;
+﻿using AgileShop.Domain.Enums;
+using AgileShop.Service.Dtos.Auth;
 using AgileShop.Service.Interfaces.Auth;
 using AgileShop.Service.Validators;
 using AgileShop.Service.Validators.Dtos.Auth;
@@ -44,5 +45,13 @@ public class AuthController : ControllerBase
     {
         var serviceResult = await _authService.VerifyRegisterAsync(verifyRegisterDto.PhoneNumber, verifyRegisterDto.Code);
         return Ok(new { serviceResult.Result, serviceResult.Token });
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> Get()
+    {
+        IdentityRole identityRole = new IdentityRole();
+        identityRole = IdentityRole.User;
+        return Ok(identityRole.ToString());
     }
 }
