@@ -7,6 +7,7 @@ using AgileShop.Service.Common.Helpers;
 using AgileShop.Service.Dtos.Categories;
 using AgileShop.Service.Interfaces.Categories;
 using AgileShop.Service.Interfaces.Common;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace AgileShop.Service.Services.Categories;
 
@@ -14,11 +15,15 @@ public class CategoryService : ICategoryService
 {
     private readonly ICategoryRepository _repository;
     private readonly IFileService _fileService;
-    public CategoryService(ICategoryRepository categoryRepository, 
-        IFileService fileService)
+    private readonly IMemoryCache _memoryCache;
+
+    public CategoryService(ICategoryRepository categoryRepository,
+        IFileService fileService,
+        IMemoryCache memoryCache)
     {
         this._repository = categoryRepository;
         this._fileService = fileService;
+        this._memoryCache = memoryCache;
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -35,7 +40,7 @@ public class CategoryService : ICategoryService
             UpdatedAt = TimeHelper.GetDateTime()
         };
         var result = await _repository.CreateAsync(category);
-        return result>0;
+        return result > 0;
     }
 
     public async Task<bool> DeleteAsync(long categoryId)
@@ -60,7 +65,7 @@ public class CategoryService : ICategoryService
     {
         var category = await _repository.GetByIdAsync(categoryId);
         if (category is null) throw new CategoryNotFoundException();
-        else return category;
+        return category;
     }
 
     public async Task<bool> UpdateAsync(long categoryId, CategoryUpdateDto dto)
@@ -71,8 +76,8 @@ public class CategoryService : ICategoryService
         // parse new items to category
         category.Name = dto.Name;
         category.Description = dto.Description;
-        
-        if(dto.Image is not null)
+
+        if (dto.Image is not null)
         {
             // delete old image
             var deleteResult = await _fileService.DeleteImageAsync(category.ImagePath);
