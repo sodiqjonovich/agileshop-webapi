@@ -19,6 +19,7 @@ public class AuthService : IAuthService
     private readonly IMemoryCache _memoryCache;
     private readonly IUserRepository _userRepository;
     private readonly ISmsSender _smsSender;
+    private readonly ITokenService _tokenService;
     private const int CACHED_MINUTES_FOR_REGISTER = 60;
     private const int CACHED_MINUTES_FOR_VERIFICATION = 5;
     private const string REGISTER_CACHE_KEY = "register_";
@@ -26,11 +27,13 @@ public class AuthService : IAuthService
     private const int VERIFICATION_MAXIMUM_ATTEMPTS = 3;
     public AuthService(IMemoryCache memoryCache, 
         IUserRepository userRepository,
-        ISmsSender smsSender)
+        ISmsSender smsSender,
+        ITokenService tokenService)
     {
         this._memoryCache = memoryCache;
         this._userRepository = userRepository;
         this._smsSender = smsSender;
+        this._tokenService = tokenService;
     }
 
     #pragma warning disable
@@ -93,7 +96,13 @@ public class AuthService : IAuthService
                 else if (verificationDto.Code == code)
                 {
                     var dbResult = await RegisterToDatabaseAsync(registerDto);
-                    return (Result: dbResult, Token: "");
+                    if (dbResult is true)
+                    {
+                        var user = await _userRepository.GetByPhoneAsync(phone);
+                        string token = await _tokenService.GenerateToken(user);
+                        return (Result: true, Token: token);
+                    }
+                    else return (Result: false, Token: "");
                 }
                 else
                 {
@@ -126,5 +135,17 @@ public class AuthService : IAuthService
         
         var dbResult = await _userRepository.CreateAsync(user);
         return dbResult > 0;
+    }
+
+    public async Task<(bool Result, string Token)> LoginAsync(LoginDto loginDto)
+    {
+        var user = await _userRepository.GetByPhoneAsync(loginDto.PhoneNumber);
+        if (user is null) throw new UserNotFoundException();
+
+        var hasherResult = PasswordHasher.Verify(loginDto.Password, user.PasswordHash, user.Salt);
+        if (hasherResult == false) throw new PasswordNotMatchException();
+
+        string token = await _tokenService.GenerateToken(user);
+        return (Result: true, Token: token);
     }
 }

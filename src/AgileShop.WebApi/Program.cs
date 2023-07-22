@@ -32,6 +32,7 @@ builder.Services.AddScoped<IFileService, FileService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddSingleton<ISmsSender, SmsSender>();
 

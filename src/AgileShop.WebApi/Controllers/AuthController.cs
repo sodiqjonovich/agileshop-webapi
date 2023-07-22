@@ -47,11 +47,15 @@ public class AuthController : ControllerBase
         return Ok(new { serviceResult.Result, serviceResult.Token });
     }
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
+    [HttpPost("login")]
+    public async Task<IActionResult> LoginAsync([FromBody] LoginDto loginDto)
     {
-        IdentityRole identityRole = new IdentityRole();
-        identityRole = IdentityRole.User;
-        return Ok(identityRole.ToString());
+        var validator = new LoginValidator();
+        var valResult = validator.Validate(loginDto);
+        if (valResult.IsValid == false) return BadRequest(valResult.Errors);
+
+        var serviceResult = await _authService.LoginAsync(loginDto);
+        return Ok(new { serviceResult.Result, serviceResult.Token });
     }
+
 }
