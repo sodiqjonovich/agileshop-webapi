@@ -3,8 +3,6 @@ using AgileShop.Service.Interfaces.Notifcations;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net;
-using System.Net.Http.Headers;
-using System.Text;
 
 namespace AgileShop.Service.Services.Notifications;
 
@@ -29,7 +27,7 @@ public class SmsSender : ISmsSender
         var client = new HttpClient();
         client.BaseAddress = new Uri(BASE_URL);
         var request = new HttpRequestMessage(HttpMethod.Post, "api/auth/login");
-        
+
         var content = new MultipartFormDataContent();
         content.Add(new StringContent(EMAIL), "email");
         content.Add(new StringContent(PASSWORD), "password");
@@ -49,7 +47,7 @@ public class SmsSender : ISmsSender
         client.BaseAddress = new Uri(BASE_URL);
         var request = new HttpRequestMessage(HttpMethod.Post, "api/message/sms/send");
         request.Headers.Add("Authorization", $"Bearer {TOKEN}");
-        
+
         var content = new MultipartFormDataContent();
         content.Add(new StringContent(smsMessage.Recipent), "mobile_phone");
         content.Add(new StringContent(smsMessage.Title + " " + smsMessage.Content), "message");

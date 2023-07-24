@@ -14,6 +14,7 @@ using AgileShop.Service.Services.Categories;
 using AgileShop.Service.Services.Common;
 using AgileShop.Service.Services.Companies;
 using AgileShop.Service.Services.Notifications;
+using AgileShop.WebApi.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 
 builder.Services.AddSingleton<ISmsSender, SmsSender>();
+builder.ConfigureJwtAuth();
 
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
@@ -44,6 +46,7 @@ if (app.Environment.IsDevelopment())
 }
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.Run();

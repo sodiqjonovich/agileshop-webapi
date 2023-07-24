@@ -2,8 +2,8 @@
 
 public class DeliveryNotFoundException : NotFoundException
 {
-	public DeliveryNotFoundException()
-	{
-		this.TitleMessage = "Delivery not found";
-	}
+    public DeliveryNotFoundException()
+    {
+        this.TitleMessage = "Delivery not found";
+    }
 }

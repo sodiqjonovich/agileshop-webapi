@@ -93,7 +93,7 @@ public class CategoryRepository : BaseRepository, ICategoryRepository
         {
             await _connection.OpenAsync();
             string query = $"SELECT * FROM categories where id=@Id";
-            var result = await _connection.QuerySingleAsync<Category>(query, new {Id=id});
+            var result = await _connection.QuerySingleAsync<Category>(query, new { Id = id });
             return result;
         }
         catch

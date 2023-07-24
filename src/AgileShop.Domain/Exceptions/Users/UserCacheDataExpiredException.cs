@@ -2,8 +2,8 @@
 
 public class UserCacheDataExpiredException : ExpiredException
 {
-	public UserCacheDataExpiredException()
-	{
-		TitleMessage = "User data has expired!";
-	}
+    public UserCacheDataExpiredException()
+    {
+        TitleMessage = "User data has expired!";
+    }
 }

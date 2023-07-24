@@ -2,8 +2,8 @@
 
 public class CategoryNotFoundException : NotFoundException
 {
-	public CategoryNotFoundException()
-	{
-		this.TitleMessage = "Category not found!";
-	}
+    public CategoryNotFoundException()
+    {
+        this.TitleMessage = "Category not found!";
+    }
 }

@@ -5,8 +5,8 @@ namespace AgileShop.Service.Validators.Dtos.Auth;
 
 public class LoginValidator : AbstractValidator<LoginDto>
 {
-	public LoginValidator()
-	{
+    public LoginValidator()
+    {
         RuleFor(dto => dto.PhoneNumber).Must(phone => PhoneNumberValidator.IsValid(phone))
             .WithMessage("Phone number is invalid! ex: +998xxYYYAABB");
 

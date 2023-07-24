@@ -70,7 +70,7 @@ public class CompanyService : ICompanyService
         company.Description = dto.Description;
         company.PhoneNumber = dto.PhoneNumber;
 
-        if(dto.Image is not null)
+        if (dto.Image is not null)
         {
             await _fileService.DeleteImageAsync(company.ImagePath);
             company.ImagePath = await _fileService.UploadImageAsync(dto.Image);

@@ -6,14 +6,14 @@ namespace AgileShop.Service.Validators.Dtos.Companies;
 
 public class CompanyCreateValidator : AbstractValidator<CompanyCreateDto>
 {
-	public CompanyCreateValidator()
-	{
-		RuleFor(dto => dto.Name).NotEmpty().NotNull().WithMessage("Company name is required!")
-			.MinimumLength(3).WithMessage("Company name must be more than 3 characters!")
-			.MaximumLength(50).WithMessage("Company name must be less than 50 characters!");
+    public CompanyCreateValidator()
+    {
+        RuleFor(dto => dto.Name).NotEmpty().NotNull().WithMessage("Company name is required!")
+            .MinimumLength(3).WithMessage("Company name must be more than 3 characters!")
+            .MaximumLength(50).WithMessage("Company name must be less than 50 characters!");
 
-		RuleFor(dto => dto.PhoneNumber).NotNull().NotEmpty().WithMessage("Company phone number is required!")
-			.Must(phone=>PhoneNumberValidator.IsValid(phone)).WithMessage("Phone number is incorrect!");
+        RuleFor(dto => dto.PhoneNumber).NotNull().NotEmpty().WithMessage("Company phone number is required!")
+            .Must(phone => PhoneNumberValidator.IsValid(phone)).WithMessage("Phone number is incorrect!");
 
         int maxImageSizeMB = 5;
         RuleFor(dto => dto.Image).NotEmpty().NotNull().WithMessage("Image field is required");

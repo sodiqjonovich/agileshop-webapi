@@ -17,7 +17,7 @@ public class CategoryCreateValidatorTest
     public void ShouldReturnWrongImageFileSize(double imageSizeMB)
     {
         byte[] byteImage = Encoding.UTF8.GetBytes("we sell an electronic products to our clients");
-        long imageSizeInBytes = (long) (imageSizeMB * 1024 * 1024);
+        long imageSizeInBytes = (long)(imageSizeMB * 1024 * 1024);
         IFormFile imageFile = new FormFile(new MemoryStream(byteImage), 0, imageSizeInBytes, "data", "file.png");
         CategoryCreateDto categoryCreateDto = new CategoryCreateDto()
         {

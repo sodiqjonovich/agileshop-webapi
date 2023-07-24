@@ -2,7 +2,6 @@
 using AgileShop.DataAccess.Utils;
 using AgileShop.Domain.Entities.Companies;
 using Dapper;
-using System.Runtime.CompilerServices;
 
 namespace AgileShop.DataAccess.Repositories.Companies;
 
@@ -53,7 +52,7 @@ public class CompanyRepository : BaseRepository, ICompanyRepository
         {
             await _connection.OpenAsync();
             string query = $"delete from companies where id = @Id";
-            var result = await _connection.ExecuteAsync(query, new { Id = id});
+            var result = await _connection.ExecuteAsync(query, new { Id = id });
             return result;
         }
         catch

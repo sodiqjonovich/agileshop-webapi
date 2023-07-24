@@ -10,7 +10,6 @@ using AgileShop.Service.Dtos.Security;
 using AgileShop.Service.Interfaces.Auth;
 using AgileShop.Service.Interfaces.Notifcations;
 using Microsoft.Extensions.Caching.Memory;
-using System.Security.AccessControl;
 
 namespace AgileShop.Service.Services.Auth;
 
@@ -25,7 +24,7 @@ public class AuthService : IAuthService
     private const string REGISTER_CACHE_KEY = "register_";
     private const string VERIFY_REGISTER_CACHE_KEY = "verify_register_";
     private const int VERIFICATION_MAXIMUM_ATTEMPTS = 3;
-    public AuthService(IMemoryCache memoryCache, 
+    public AuthService(IMemoryCache memoryCache,
         IUserRepository userRepository,
         ISmsSender smsSender,
         ITokenService tokenService)
@@ -36,19 +35,19 @@ public class AuthService : IAuthService
         this._tokenService = tokenService;
     }
 
-    #pragma warning disable
+#pragma warning disable
     public async Task<(bool Result, int CachedMinutes)> RegisterAsync(RegisterDto dto)
     {
         var user = await _userRepository.GetByPhoneAsync(dto.PhoneNumber);
         if (user is not null) throw new UserAlreadyExistsException(dto.PhoneNumber);
 
         // delete if exists user by this phone number
-        if(_memoryCache.TryGetValue(REGISTER_CACHE_KEY+dto.PhoneNumber, out RegisterDto cachedRegisterDto))
+        if (_memoryCache.TryGetValue(REGISTER_CACHE_KEY + dto.PhoneNumber, out RegisterDto cachedRegisterDto))
         {
             cachedRegisterDto.FirstName = cachedRegisterDto.FirstName;
             _memoryCache.Remove(dto.PhoneNumber);
         }
-        else _memoryCache.Set(REGISTER_CACHE_KEY + dto.PhoneNumber, dto, 
+        else _memoryCache.Set(REGISTER_CACHE_KEY + dto.PhoneNumber, dto,
             TimeSpan.FromMinutes(CACHED_MINUTES_FOR_REGISTER));
 
         return (Result: true, CachedMinutes: CACHED_MINUTES_FOR_REGISTER);
@@ -65,12 +64,12 @@ public class AuthService : IAuthService
             // make confirm code as random
             verificationDto.Code = CodeGenerator.GenerateRandomNumber();
 
-            if(_memoryCache.TryGetValue(VERIFY_REGISTER_CACHE_KEY+phone, out VerificationDto oldVerifcationDto))
+            if (_memoryCache.TryGetValue(VERIFY_REGISTER_CACHE_KEY + phone, out VerificationDto oldVerifcationDto))
             {
                 _memoryCache.Remove(VERIFY_REGISTER_CACHE_KEY + phone);
             }
-            
-            _memoryCache.Set(VERIFY_REGISTER_CACHE_KEY + phone, verificationDto, 
+
+            _memoryCache.Set(VERIFY_REGISTER_CACHE_KEY + phone, verificationDto,
                 TimeSpan.FromMinutes(CACHED_MINUTES_FOR_VERIFICATION));
 
             SmsMessage smsMessage = new SmsMessage();
@@ -87,7 +86,7 @@ public class AuthService : IAuthService
 
     public async Task<(bool Result, string Token)> VerifyRegisterAsync(string phone, int code)
     {
-        if(_memoryCache.TryGetValue(REGISTER_CACHE_KEY + phone, out RegisterDto registerDto))
+        if (_memoryCache.TryGetValue(REGISTER_CACHE_KEY + phone, out RegisterDto registerDto))
         {
             if (_memoryCache.TryGetValue(VERIFY_REGISTER_CACHE_KEY + phone, out VerificationDto verificationDto))
             {
@@ -125,14 +124,14 @@ public class AuthService : IAuthService
         user.LastName = registerDto.LastName;
         user.PhoneNumber = registerDto.PhoneNumber;
         user.PhoneNumberConfirmed = true;
-        
+
         var hasherResult = PasswordHasher.Hash(registerDto.Password);
         user.PasswordHash = hasherResult.Hash;
         user.Salt = hasherResult.Salt;
 
         user.CreatedAt = user.UpdatedAt = user.LastActivity = TimeHelper.GetDateTime();
-        user.Role = Domain.Enums.IdentityRole.User;
-        
+        user.IdentityRole = Domain.Enums.IdentityRole.User;
+
         var dbResult = await _userRepository.CreateAsync(user);
         return dbResult > 0;
     }

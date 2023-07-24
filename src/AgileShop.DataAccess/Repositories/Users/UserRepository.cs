@@ -3,7 +3,6 @@ using AgileShop.DataAccess.Utils;
 using AgileShop.DataAccess.ViewModels.Users;
 using AgileShop.Domain.Entities.Users;
 using Dapper;
-using System.Data.Common;
 using static Dapper.SqlMapper;
 
 namespace AgileShop.DataAccess.Repositories.Users;
@@ -75,7 +74,7 @@ public class UserRepository : BaseRepository, IUserRepository
             var data = await _connection.QuerySingleAsync<User>(query, new { PhoneNumber = phone });
             return data;
         }
-        catch 
+        catch
         {
             return null;
         }

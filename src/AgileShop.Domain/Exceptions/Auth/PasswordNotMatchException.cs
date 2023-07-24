@@ -2,8 +2,8 @@
 
 public class PasswordNotMatchException : BadRequestException
 {
-	public PasswordNotMatchException()
-	{
-		TitleMessage = "Password is invalid!";
-	}
+    public PasswordNotMatchException()
+    {
+        TitleMessage = "Password is invalid!";
+    }
 }

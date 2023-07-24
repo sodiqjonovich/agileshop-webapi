@@ -2,8 +2,8 @@
 
 public class DiscountNotFoundException : NotFoundException
 {
-	public DiscountNotFoundException()
-	{
-		this.TitleMessage = "Discount not found!";
-	}
+    public DiscountNotFoundException()
+    {
+        this.TitleMessage = "Discount not found!";
+    }
 }

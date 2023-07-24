@@ -1,5 +1,4 @@
-﻿using AgileShop.Domain.Entities.Companies;
-using AgileShop.Service.Common.Helpers;
+﻿using AgileShop.Service.Common.Helpers;
 using AgileShop.Service.Dtos.Companies;
 using FluentValidation;
 

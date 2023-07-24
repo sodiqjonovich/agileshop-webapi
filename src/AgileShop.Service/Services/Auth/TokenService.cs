@@ -11,7 +11,7 @@ namespace AgileShop.Service.Services.Auth;
 
 public class TokenService : ITokenService
 {
-    private readonly IConfiguration _config; 
+    private readonly IConfiguration _config;
     public TokenService(IConfiguration configuration)
     {
         _config = configuration.GetSection("Jwt");
@@ -24,7 +24,7 @@ public class TokenService : ITokenService
             new Claim("FirstName", user.FirstName),
             new Claim("Lastname", user.LastName),
             new Claim(ClaimTypes.MobilePhone, user.PhoneNumber),
-            new Claim(ClaimTypes.Role, user.Role.ToString())
+            new Claim(ClaimTypes.Role, user.IdentityRole.ToString())
         };
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["SecurityKey"]!));

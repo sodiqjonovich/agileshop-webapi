@@ -1,8 +1,8 @@
 ﻿using AgileShop.DataAccess.Utils;
 using AgileShop.Service.Dtos.Companies;
 using AgileShop.Service.Interfaces.Companies;
-using AgileShop.Service.Validators.Dtos.Categories;
 using AgileShop.Service.Validators.Dtos.Companies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgileShop.WebApi.Controllers;
@@ -19,14 +19,17 @@ public class CompaniesController : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllAsync([FromQuery] int page = 1)
         => Ok(await _service.GetAllAsync(new PaginationParams(page, maxPageSize)));
 
     [HttpGet("{companyId}")]
+    [AllowAnonymous]
     public async Task<IActionResult> GetByIdAsync(long companyId)
         => Ok(await _service.GetByIdAsync(companyId));
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] CompanyCreateDto dto)
     {
         var validator = new CompanyCreateValidator();
@@ -36,6 +39,7 @@ public class CompaniesController : ControllerBase
     }
 
     [HttpPut("{companyId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> UpdateAsync(long companyId, [FromForm] CompanyUpdateDto dto)
     {
         var validator = new CompanyUpdateValidator();
@@ -45,6 +49,7 @@ public class CompaniesController : ControllerBase
     }
 
     [HttpDelete("{companyId}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> DeleteAsync(long companyId)
         => Ok(await _service.DeleteAsync(companyId));
 }

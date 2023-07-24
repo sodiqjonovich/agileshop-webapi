@@ -1,6 +1,5 @@
 ﻿using Dapper;
 using System.Data;
-using System.Data.Common;
 
 namespace AgileShop.DataAccess.Handlers;
 
@@ -18,6 +17,6 @@ public class DateOnlyTypeHandler : SqlMapper.TypeHandler<DateOnly>
 
     public override void SetValue(IDbDataParameter parameter, DateOnly value)
     {
-        parameter.Value = (object) ("" + value.Year + "-" + value.Month + "-" + value.Day);
+        parameter.Value = (object)("" + value.Year + "-" + value.Month + "-" + value.Day);
     }
 }

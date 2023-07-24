@@ -44,7 +44,7 @@ public class FileService : IFileService
         string newImageName = MediaHelper.MakeImageName(image.FileName);
         string subpath = Path.Combine(MEDIA, IMAGES, newImageName);
         string path = Path.Combine(ROOTPATH, subpath);
-        
+
         var stream = new FileStream(path, FileMode.Create);
         await image.CopyToAsync(stream);
         stream.Close();

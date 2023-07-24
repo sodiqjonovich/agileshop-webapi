@@ -9,7 +9,7 @@ public class ProductDiscount : Auditable
     public string Description { get; set; } = String.Empty;
 
     public DateTime StartAt { get; set; }
-    
+
     public DateTime EndAt { get; set; }
 
     public short Percentage { get; set; }

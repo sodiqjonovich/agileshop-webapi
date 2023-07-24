@@ -1,6 +1,5 @@
 ﻿using AgileShop.Service.Dtos.Notifications;
 using AgileShop.Service.Interfaces.Notifcations;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgileShop.WebApi.Controllers;

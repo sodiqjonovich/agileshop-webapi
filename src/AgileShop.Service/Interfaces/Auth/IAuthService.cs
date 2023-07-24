@@ -1,5 +1,4 @@
-﻿using AgileShop.Domain.Entities.Users;
-using AgileShop.Service.Dtos.Auth;
+﻿using AgileShop.Service.Dtos.Auth;
 
 namespace AgileShop.Service.Interfaces.Auth;
 

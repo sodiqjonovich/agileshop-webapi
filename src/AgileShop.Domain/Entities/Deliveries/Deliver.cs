@@ -1,5 +1,4 @@
-﻿using AgileShop.Domain.Enums;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AgileShop.Domain.Entities.Deliveries;
 

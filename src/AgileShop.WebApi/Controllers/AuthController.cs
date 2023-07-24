@@ -1,8 +1,8 @@
-﻿using AgileShop.Domain.Enums;
-using AgileShop.Service.Dtos.Auth;
+﻿using AgileShop.Service.Dtos.Auth;
 using AgileShop.Service.Interfaces.Auth;
 using AgileShop.Service.Validators;
 using AgileShop.Service.Validators.Dtos.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AgileShop.WebApi.Controllers;
@@ -18,6 +18,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register")]
+    [AllowAnonymous]
     public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto registerDto)
     {
         var validator = new RegisterValidator();
@@ -31,6 +32,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register/send-code")]
+    [AllowAnonymous]
     public async Task<IActionResult> SendCodeRegisterAsync(string phone)
     {
         var result = PhoneNumberValidator.IsValid(phone);
@@ -41,6 +43,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("register/verify")]
+    [AllowAnonymous]
     public async Task<IActionResult> VerifyRegisterAsync([FromBody] VerifyRegisterDto verifyRegisterDto)
     {
         var serviceResult = await _authService.VerifyRegisterAsync(verifyRegisterDto.PhoneNumber, verifyRegisterDto.Code);
@@ -48,6 +51,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
+    [AllowAnonymous]
     public async Task<IActionResult> LoginAsync([FromBody] LoginDto loginDto)
     {
         var validator = new LoginValidator();
