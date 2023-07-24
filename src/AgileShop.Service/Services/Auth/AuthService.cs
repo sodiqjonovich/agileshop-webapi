@@ -45,7 +45,7 @@ public class AuthService : IAuthService
         if (_memoryCache.TryGetValue(REGISTER_CACHE_KEY + dto.PhoneNumber, out RegisterDto cachedRegisterDto))
         {
             cachedRegisterDto.FirstName = cachedRegisterDto.FirstName;
-            _memoryCache.Remove(dto.PhoneNumber);
+            _memoryCache.Remove(REGISTER_CACHE_KEY + dto.PhoneNumber);
         }
         else _memoryCache.Set(REGISTER_CACHE_KEY + dto.PhoneNumber, dto,
             TimeSpan.FromMinutes(CACHED_MINUTES_FOR_REGISTER));
