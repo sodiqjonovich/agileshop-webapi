@@ -16,7 +16,7 @@ public class TokenService : ITokenService
     {
         _config = configuration.GetSection("Jwt");
     }
-    public async Task<string> GenerateToken(User user)
+    public string GenerateToken(User user)
     {
         var identityClaims = new Claim[]
         {

@@ -98,7 +98,7 @@ public class AuthService : IAuthService
                     if (dbResult is true)
                     {
                         var user = await _userRepository.GetByPhoneAsync(phone);
-                        string token = await _tokenService.GenerateToken(user);
+                        string token = _tokenService.GenerateToken(user);
                         return (Result: true, Token: token);
                     }
                     else return (Result: false, Token: "");
@@ -144,7 +144,7 @@ public class AuthService : IAuthService
         var hasherResult = PasswordHasher.Verify(loginDto.Password, user.PasswordHash, user.Salt);
         if (hasherResult == false) throw new PasswordNotMatchException();
 
-        string token = await _tokenService.GenerateToken(user);
+        string token = _tokenService.GenerateToken(user);
         return (Result: true, Token: token);
     }
 }
