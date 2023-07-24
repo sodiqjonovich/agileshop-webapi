@@ -13,12 +13,15 @@ public class CompanyService : ICompanyService
 {
     private readonly ICompanyRepository _repository;
     private readonly IFileService _fileService;
+    private readonly IPaginator _paginator;
 
     public CompanyService(ICompanyRepository companyRepository,
-        IFileService fileService)
+        IFileService fileService,
+        IPaginator paginator)
     {
         this._repository = companyRepository;
         this._fileService = fileService;
+        this._paginator = paginator;
     }
     public async Task<bool> CreateAsync(CompanyCreateDto dto)
     {
@@ -48,9 +51,8 @@ public class CompanyService : ICompanyService
     public async Task<IList<Company>> GetAllAsync(PaginationParams @params)
     {
         var companies = await _repository.GetAllAsync(@params);
-        /*
-         Pagination
-        */
+        long count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
         return companies;
     }
 

@@ -34,8 +34,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ICompanyService, CompanyService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-
+builder.Services.AddScoped<IPaginator, Paginator>();
 builder.Services.AddSingleton<ISmsSender, SmsSender>();
+
 builder.ConfigureJwtAuth();
 builder.ConfigureSwaggerAuth();
 

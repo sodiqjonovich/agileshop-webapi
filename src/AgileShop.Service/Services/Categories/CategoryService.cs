@@ -16,14 +16,17 @@ public class CategoryService : ICategoryService
     private readonly ICategoryRepository _repository;
     private readonly IFileService _fileService;
     private readonly IMemoryCache _memoryCache;
+    private readonly IPaginator _paginator;
 
     public CategoryService(ICategoryRepository categoryRepository,
         IFileService fileService,
-        IMemoryCache memoryCache)
+        IMemoryCache memoryCache,
+        IPaginator paginator)
     {
         this._repository = categoryRepository;
         this._fileService = fileService;
         this._memoryCache = memoryCache;
+        this._paginator = paginator;
     }
 
     public async Task<long> CountAsync() => await _repository.CountAsync();
@@ -58,6 +61,8 @@ public class CategoryService : ICategoryService
     public async Task<IList<Category>> GetAllAsync(PaginationParams @params)
     {
         var categories = await _repository.GetAllAsync(@params);
+        var count = await _repository.CountAsync();
+        _paginator.Paginate(count, @params);
         return categories;
     }
 
