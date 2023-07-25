@@ -2,9 +2,9 @@
 
 namespace AgileShop.Domain.Exceptions;
 
-public class ExpiredException : Exception
+public class ExpiredException : ClientException
 {
-    public HttpStatusCode StatusCode { get; } = HttpStatusCode.Gone;
+    public override HttpStatusCode StatusCode { get; } = HttpStatusCode.Gone;
 
-    public string TitleMessage { get; protected set; } = String.Empty;
+    public override string TitleMessage { get; protected set; } = String.Empty;
 }

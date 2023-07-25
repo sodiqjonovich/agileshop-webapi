@@ -12,7 +12,7 @@ namespace AgileShop.WebApi.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly ICategoryService _service;
-    private readonly int maxPageSize = 3;
+    private readonly int maxPageSize = 30;
     public CategoriesController(ICategoryService service)
     {
         this._service = service;

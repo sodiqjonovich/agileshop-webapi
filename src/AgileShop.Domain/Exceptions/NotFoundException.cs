@@ -2,9 +2,9 @@
 
 namespace AgileShop.Domain.Exceptions;
 
-public class NotFoundException : Exception
+public class NotFoundException : ClientException
 {
-    public HttpStatusCode StatusCode { get; } = HttpStatusCode.NotFound;
+    public override HttpStatusCode StatusCode { get; } = HttpStatusCode.NotFound;
 
-    public string TitleMessage { get; protected set; } = String.Empty;
+    public override string TitleMessage { get; protected set; } = String.Empty;
 }

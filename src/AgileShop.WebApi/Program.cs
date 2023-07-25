@@ -1,5 +1,6 @@
 using AgileShop.WebApi.Configurations;
 using AgileShop.WebApi.Configurations.Layers;
+using AgileShop.WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,7 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
 builder.ConfigureJwtAuth();
 builder.ConfigureSwaggerAuth();
+builder.ConfigureCORSPolicy();
 builder.ConfigureDataAccess();
 builder.ConfigureServiceLayer();
 
@@ -20,7 +22,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseHttpsRedirection();
+app.UseCors("AllowAll");
 app.UseStaticFiles();
+app.UseMiddleware<ExceptionHandlerMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
