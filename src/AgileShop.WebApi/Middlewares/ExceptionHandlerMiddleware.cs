@@ -38,7 +38,8 @@ public class ExceptionHandlerMiddleware
 			}
 			else if (env.IsProduction())
 			{
-				await httpContext.Response.WriteAsync("There is unknown error!");
+				await httpContext.Response.WriteAsync(exception.Message);
+				//await httpContext.Response.WriteAsync("There is unknown error!");
 			}
 			// write to logs
 		}
