@@ -1,6 +1,7 @@
 using AgileShop.WebApi.Configurations;
 using AgileShop.WebApi.Configurations.Layers;
 using AgileShop.WebApi.Middlewares;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,9 +10,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddMemoryCache();
-builder.ConfigureJwtAuth();
-builder.ConfigureSwaggerAuth();
-builder.ConfigureCORSPolicy();
+
+builder.ConfiguraWeb();
 builder.ConfigureDataAccess();
 builder.ConfigureServiceLayer();
 

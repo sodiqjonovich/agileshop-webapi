@@ -2,6 +2,7 @@
 using AgileShop.Service.Interfaces.Auth;
 using AgileShop.Service.Interfaces.Notifcations;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace AgileShop.WebApi.Controllers;
 
@@ -21,6 +22,7 @@ public class SmsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> SendAsync([FromBody] SmsMessage smsMessage)
     {
+        Log.Information("Xabar jo'natilmoqda!");
         return Ok(await _smsSender.SendAsync(smsMessage));
     }
 
