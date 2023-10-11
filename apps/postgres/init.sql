@@ -160,3 +160,20 @@ create table order_details
 	updated_at timestamp without time zone default now()
 );
 SET TIMEZONE TO 'UTC';
+
+-- seed data
+INSERT INTO public.users(
+	first_name, last_name, 
+	phone_number, phone_number_confirmed, 
+	passport_seria_number, is_male, birth_date, 
+	country, region, 
+	password_hash, salt, 
+	image_path, last_activity, identity_role, 
+	created_at, updated_at)
+VALUES ('O''tkirbek', 'Sobirjonov', 
+		'+998976260619', true, 
+		'', true, '2002-06-19', 
+		'Uzbekistan', 'Tashkent', 
+		'$2a$11$bUjrF6LA2dlmnmvitzxMlOdyqLLyD0vvGdhOZ7tXV5vIvEVSB.AFG', '4c5e8794-e7a7-4178-8629-a862dfd2ac32', 
+		'', '2023-07-20 14:08:57.097348', '1', 
+		now(), now());

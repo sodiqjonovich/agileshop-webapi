@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+
+  backend:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: agileshop-backend-container
+    image: agileshop-backend-image:latest
+    restart: always
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    depends_on:
+      - database
+    ports:
+      - 8080:80
+      - 4343:443
+    networks:
+      - db_bridge
+
+  database:
+    build: 
+      context: .
+      dockerfile: ./apps/postgres/Dockerfile
+    container_name: agileshop-database-container
+    hostname: agileshop-database-host
+    image: agileshop-database-image
+    restart: always
+    ports:
+      - 5433:5432
+    networks:
+      - db_bridge
+    
+networks:
+  db_bridge:
+    driver: bridge

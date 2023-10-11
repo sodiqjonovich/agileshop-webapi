@@ -6,6 +6,7 @@ using AgileShop.Service.Common.Helpers;
 using AgileShop.Service.Dtos.Companies;
 using AgileShop.Service.Interfaces.Common;
 using AgileShop.Service.Interfaces.Companies;
+using AutoMapper;
 
 namespace AgileShop.Service.Services.Companies;
 
@@ -14,23 +15,22 @@ public class CompanyService : ICompanyService
     private readonly ICompanyRepository _repository;
     private readonly IFileService _fileService;
     private readonly IPaginator _paginator;
+    private readonly IMapper _mapper;
 
     public CompanyService(ICompanyRepository companyRepository,
         IFileService fileService,
-        IPaginator paginator)
+        IPaginator paginator,
+        IMapper mapper)
     {
         this._repository = companyRepository;
         this._fileService = fileService;
         this._paginator = paginator;
+        this._mapper = mapper;
     }
     public async Task<bool> CreateAsync(CompanyCreateDto dto)
     {
-        string imagepath = await _fileService.UploadImageAsync(dto.Image);
-        Company company = new Company();
-        company.Name = dto.Name;
-        company.Description = dto.Description;
-        company.PhoneNumber = dto.PhoneNumber;
-        company.ImagePath = imagepath;
+        Company company = _mapper.Map<Company>(dto);
+        company.ImagePath = await _fileService.UploadImageAsync(dto.Image);
         company.CreatedAt = company.UpdatedAt = TimeHelper.GetDateTime();
         var dbResult = await _repository.CreateAsync(company);
         return dbResult > 0;

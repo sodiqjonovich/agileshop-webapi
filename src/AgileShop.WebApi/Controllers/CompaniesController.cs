@@ -12,7 +12,7 @@ namespace AgileShop.WebApi.Controllers;
 public class CompaniesController : ControllerBase
 {
     private readonly ICompanyService _service;
-    private readonly int maxPageSize = 30;
+    private readonly int maxPageSize = 1;
     public CompaniesController(ICompanyService companyService)
     {
         this._service = companyService;
@@ -29,7 +29,7 @@ public class CompaniesController : ControllerBase
         => Ok(await _service.GetByIdAsync(companyId));
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> CreateAsync([FromForm] CompanyCreateDto dto)
     {
         var validator = new CompanyCreateValidator();
